@@ -4,15 +4,16 @@
 // a try to output a variable onto the SmartMatrix
 
 void PrintValue() {
-  pSmartMatrix->swapBuffers(true);
+//  pSmartMatrix->swapBuffers(true);
   char value[3];
   value[0] = '0' + brightness / 100;
   value[1] = '0' + (brightness % 100) / 10;
   value[2] = '0' + brightness % 10;
-  pSmartMatrix->drawString(0, 16, {
+/*  pSmartMatrix->drawString(0, 16, {
     200, 200, 200        } 
   , value);
   pSmartMatrix->swapBuffers(true);
+  */
   delay(500);
 }
 

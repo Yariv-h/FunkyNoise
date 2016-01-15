@@ -14,25 +14,29 @@
  Mark Kriegsmann and Louis Beaudoin.
  
  Written by Stefan Petrick 2014.
+ Extended by Will Tatam
  
  hello(at) stefan-petrick . de
  
  ...
  
  Download the required software first:
- FastLED 3.0
- SmartMatrix
+ FastLED 3.1
  Arduino IDE 1.0.6
  Teensyduino 1.2
  
  */
 
-#include<SmartMatrix.h>
 #include<FastLED.h>
 
+//---LED SETUP STUFF
+#define LED_PIN 2
+#define CLOCK_PIN 6
+#define COLOR_ORDER BGR
+
 // the size of your matrix
-#define kMatrixWidth  32
-#define kMatrixHeight 32
+#define kMatrixWidth  15
+#define kMatrixHeight 15
 
 // used in FillNoise for central zooming
 byte CentreX =  (kMatrixWidth / 2) - 1;
@@ -63,7 +67,7 @@ int16_t dx;
 int16_t dy;
 int16_t dz;
 int16_t dsx;
-int16_t dsy;
+int16_t dsy;  
 
 // a 3dimensional array used to store the calculated 
 // values of the different noise planes
@@ -93,13 +97,11 @@ void setup() {
   Serial.begin(115200);
 
   // add the SmartMatrix controller
-  LEDS.addLeds<SMART_MATRIX>(leds,NUM_LEDS);
+  FastLED.addLeds<DOTSTAR, LED_PIN, CLOCK_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
 
   // switch dithering off to avoid flicking at low fps
   FastLED.setDither(0);
 
-  // adjust the gamma curves to human perception
-  pSmartMatrix->setColorCorrection(cc48);
 
   // fill all animation variables with valid values to
   // allow straight forward animation programming
@@ -128,14 +130,13 @@ uint16_t beatsin(accum88 beats_per_minute, uint16_t lowest = 0, uint16_t highest
 
 void loop() {
 
-  /*
-  Whats new?
-   Caleidoscope1-5 functions in experimental.ino 
-   Calceidoscope examples Caleido1-7 in Animations.ino
-   */
-
-  Caleido3();
-  ShowFrame();
+  for(int p=0; p<= 19; p++) {
+    pgm=p;
+    for(int i=0; i < 500; i++) {
+      RunAnimationDependingOnPgm();
+      ShowFrame();
+    }
+  }
 
 } 
 
