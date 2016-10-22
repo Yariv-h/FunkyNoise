@@ -97,7 +97,7 @@ void setup() {
   Serial.begin(115200);
 
   // add the SmartMatrix controller
-  FastLED.addLeds<DOTSTAR, LED_PIN, CLOCK_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
+  FastLED.addLeds<DOTSTAR, LED_PIN, CLOCK_PIN, COLOR_ORDER, DATA_RATE_MHZ(6)>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
 
   // switch dithering off to avoid flicking at low fps
   FastLED.setDither(0);
