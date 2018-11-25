@@ -104,31 +104,31 @@ void ReadButtons () {
       switch (mode) {
 
       case 0:
-        pSmartMatrix->scrollText("PROGAM + -", -1);
+//        pSmartMatrix->scrollText("PROGAM + -", -1);
         break;
 
       case 1:
-        pSmartMatrix->scrollText("SPEED + -", -1);
+//        pSmartMatrix->scrollText("SPEED + -", -1);
         break;
 
       case 2:
-        pSmartMatrix->scrollText("BRIGHTNESS + -", -1);
+//        pSmartMatrix->scrollText("BRIGHTNESS + -", -1);
         break;
 
       case 3:
-        pSmartMatrix->scrollText("RED + -", -1);
+//        pSmartMatrix->scrollText("RED + -", -1);
         break;
 
       case 4:
-        pSmartMatrix->scrollText("GREEN + -", -1);
+//        pSmartMatrix->scrollText("GREEN + -", -1);
         break;
 
       case 5:
-        pSmartMatrix->scrollText("BLUE + -", -1);
+//        pSmartMatrix->scrollText("BLUE + -", -1);
         break;
 
       case 6:
-        pSmartMatrix->scrollText("+ FOR RESET  - FOR TEXT OFF", -1);
+//        pSmartMatrix->scrollText("+ FOR RESET  - FOR TEXT OFF", -1);
         break;
 
       }
@@ -201,13 +201,14 @@ void ReadButtons () {
       delay(DEBOUNCE_DELAY);
     }
     if (mode == 6 && button3 == LOW) { // reset text
-      pSmartMatrix->scrollText(" ", -1);
+//      pSmartMatrix->scrollText(" ", -1);
       delay(DEBOUNCE_DELAY);
     }
   }
 }
 
 void SetupMatrixText() {
+  /*
   pSmartMatrix->setScrollMode(wrapForward);
   //pSmartMatrix->setScrollMode(stopped);
   pSmartMatrix->setScrollColor({
@@ -217,6 +218,7 @@ void SetupMatrixText() {
   pSmartMatrix->setScrollFont(font5x7);
   //pSmartMatrix->scrollText("FunkyNoise", -1);
   //pSmartMatrix->setScrollOffsetFromEdge(10);
+  */
 }
 
 

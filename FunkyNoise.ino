@@ -14,25 +14,29 @@
  Mark Kriegsmann and Louis Beaudoin.
  
  Written by Stefan Petrick 2014.
- 
+ Extended by Will Tatam
+
  hello(at) stefan-petrick . de
  
  ...
  
  Download the required software first:
- FastLED 3.0
- SmartMatrix
+ FastLED 3.1
  Arduino IDE 1.0.6
  Teensyduino 1.2
  
  */
 
-#include<SmartMatrix.h>
 #include<FastLED.h>
 
+//---LED SETUP STUFF
+#define LED_PIN 7
+#define CLOCK_PIN 14
+#define COLOR_ORDER BGR
+
 // the size of your matrix
-#define kMatrixWidth  32
-#define kMatrixHeight 32
+#define kMatrixWidth  30
+#define kMatrixHeight 30
 
 // used in FillNoise for central zooming
 byte CentreX =  (kMatrixWidth / 2) - 1;
@@ -92,14 +96,14 @@ void setup() {
   // enable debugging info output
   Serial.begin(115200);
 
-  // add the SmartMatrix controller
-  LEDS.addLeds<SMART_MATRIX>(leds,NUM_LEDS);
+  // Add LEDS
+
+//  FastLED.addLeds<WS2811, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
+  FastLED.addLeds<APA102, LED_PIN, CLOCK_PIN, COLOR_ORDER, DATA_RATE_MHZ(8)>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
 
   // switch dithering off to avoid flicking at low fps
   FastLED.setDither(0);
 
-  // adjust the gamma curves to human perception
-  pSmartMatrix->setColorCorrection(cc48);
 
   // fill all animation variables with valid values to
   // allow straight forward animation programming
@@ -111,6 +115,8 @@ void setup() {
   pinMode(19, INPUT);
 
   SetupMatrixText();
+
+  pgm = random(0, 19);
 }
 
 
@@ -119,25 +125,28 @@ void setup() {
 uint16_t beatsin(accum88 beats_per_minute, uint16_t lowest = 0, uint16_t highest = 65535, byte phase = 0)
 {
   uint16_t beat = beat16( beats_per_minute);
-  uint16_t beatsin = (sin16( beat+(phase*256)) + 32768);
+  uint16_t beatsin = (sin16( beat + (phase * 256)) + 32768);
   uint16_t rangewidth = highest - lowest;
   uint16_t scaledbeat = scale16( beatsin, rangewidth);
   uint16_t result = lowest + scaledbeat;
   return result;
 }
-
+int plastmillis;
 void loop() {
 
-  /*
-  Whats new?
-   Caleidoscope1-5 functions in experimental.ino 
-   Calceidoscope examples Caleido1-7 in Animations.ino
-   */
+  if ((((millis() / 1000) - plastmillis)) > 120) {
+    Serial.println("Next pattern");
+    plastmillis = millis() / 1000;
+    pgm = random(0, 19);
+    //pgm++;
+    if (pgm > 19) pgm = 0;
+  }
 
-  Caleido3();
+
+  RunAnimationDependingOnPgm();
   ShowFrame();
-
-} 
+  FastLED.delay(30);
+}
 
 
 
